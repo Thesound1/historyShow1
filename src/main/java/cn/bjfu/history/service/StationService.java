@@ -55,6 +55,27 @@ public class StationService {
         return null;
     }
 
+    public List<StationTodayData> getStationThisMonthData() {
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String result = (String) valueOperations.get("StationThisMonthData");
+        List<StationTodayData> tCounts = JSON.parseArray(result, StationTodayData.class);
+//        if (tCounts != null && tCounts.size() != 0) {
+//            Collections.sort(tCounts, new Comparator<StationTodayData>() {
+//                public int compare(StationTodayData o1, StationTodayData o2) {
+//                    if (o1.getCount() > o2.getCount()) {
+//                        return -1;
+//                    }
+//                    if (o1.getCount() == o2.getCount()) {
+//                        return 0;
+//                    }
+//                    return 1;
+//                }
+//            });
+//            return tCounts;
+//        }
+        return tCounts;
+    }
+
     public List<ProvinceStation> getProvinceStationCount() {
         List<ProvinceStation> provinceStationCount = stationMapper.getProvinceStationCount();
         return provinceStationCount;

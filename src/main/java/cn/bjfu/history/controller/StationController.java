@@ -31,6 +31,15 @@ public class StationController {
         return ResultModel.error("查询失败");
     }
 
+    @GetMapping("/getStationThisMonthData")
+    public ResultModel getStationThisMonthData() {
+        List<StationTodayData> stationTodayData = stationService.getStationThisMonthData();
+        if (stationTodayData != null && stationTodayData.size() != 0) {
+            return ResultModel.ok(stationTodayData);
+        }
+        return ResultModel.error("查询失败");
+    }
+
     @GetMapping("/getProvinceStationCount")
     public ResultModel getProvinceStationCount() {
         List<ProvinceStation> provinceStationCountrovinceStation = stationService.getProvinceStationCount();

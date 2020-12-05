@@ -37,4 +37,20 @@ public interface StationMapper {
             "GROUP BY\n" +
             "\tstation_detail.type1")
     List<ProvinceStation> getProvinceStationCount();
+
+    @Select("SELECT\n" +
+            "\te.station_id, \n" +
+            "\ts.station_name,\n" +
+            "\tcount(*) count\n" +
+            "FROM\n" +
+            "\tecodata AS e\n" +
+            "\tINNER JOIN\n" +
+            "\tstation_detail AS s\n" +
+            "\tON \n" +
+            "\t\te.station_id = s.station_id\n" +
+            "WHERE\n" +
+            "\tdate(e.data_time) >= date_sub(curdate(),interval 1 month)\n" +
+            "GROUP BY\n" +
+            "\tstation_id ")
+    List<StationTodayData> getStationThisMonthData();
 }

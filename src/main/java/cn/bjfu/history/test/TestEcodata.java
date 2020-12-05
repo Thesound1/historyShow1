@@ -19,14 +19,14 @@ public class TestEcodata {
     @Autowired
     private EcodataService ecodataService;
 
-    @RequestMapping("/get")
-    public void test() {
-        ecodataCountTiming.saveEcodataByDay();
-    }
-
-    @RequestMapping("/get1")
-    public void test1() {
-        ecodataCountTiming.saveEcodataByMonth();
-        ecodataCountTiming.saveEcodataByYear();
-    }
+//    @RequestMapping("/get")
+////    public void test() {
+////        ecodataCountTiming.saveEcodataByDay();
+////    }
+////
+////    @RequestMapping("/get1")
+////    public void test1() {
+////        ecodataCountTiming.saveEcodataByMonth();
+////        ecodataCountTiming.saveEcodataByYear();
+////    }
 }

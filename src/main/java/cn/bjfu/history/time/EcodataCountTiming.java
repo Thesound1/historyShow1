@@ -86,6 +86,16 @@ public class EcodataCountTiming {
         valueOperations.set("StationTodayData", str);
     }
 
+    /**
+     * 获取各个站点当月的数据量
+     */
+    @Scheduled(cron = "0 0/20 0/1 * * ? ")
+    public void getStationThisMonthData() {
+        List<StationTodayData> stationTodayData = stationMapper.getStationThisMonthData();
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String str = JSON.toJSON(stationTodayData).toString();
+        valueOperations.set("StationThisMonthData", str);
+    }
 
     public void saveEcodataException() {
         List<TCount> exceptionFlag = ecodataMapper.getExceptionFlag();
