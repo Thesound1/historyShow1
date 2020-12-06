@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by jxy on 2020/12/1 0001 22:51
  */
 @Controller
-public class RedisSet {
+public class RedisSetByHand {
     @Autowired
     private EcodataMapper ecodataMapper;
     @Autowired
@@ -19,14 +19,20 @@ public class RedisSet {
     @Autowired
     private EcodataService ecodataService;
 
-    @GetMapping("/InitEcodata")
-    public void test() {
+    @GetMapping("/setEcodataByDay")
+    public void setEcodataByDay() {
         ecodataCountTiming.saveEcodataByDay();
+    }
+    @GetMapping("/setEcodataByMonth")
+    public void setEcodataByMonth() {
         ecodataCountTiming.saveEcodataByMonth();
+    }
+    @GetMapping("/setEcodataByYear")
+    public void setEcodataByYear() {
         ecodataCountTiming.saveEcodataByYear();
     }
 
-    @GetMapping("/setStationsThisMonthData")
+    @GetMapping("/setStationsThisMonthDataCount")
     public String InitStationsThisMonthData() {
         ecodataCountTiming.setStationsThisMonthDataCount();
         return "redirect:/getStationsThisMonthDataCount";
