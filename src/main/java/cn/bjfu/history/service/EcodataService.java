@@ -3,17 +3,13 @@ package cn.bjfu.history.service;
 import cn.bjfu.history.mapper.EcodataMapper;
 import cn.bjfu.history.model.TCount;
 import com.alibaba.fastjson.JSON;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jxy on 2020/12/1 0001 22:51

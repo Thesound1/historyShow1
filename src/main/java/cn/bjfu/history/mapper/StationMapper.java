@@ -1,7 +1,7 @@
 package cn.bjfu.history.mapper;
 
 import cn.bjfu.history.model.ProvinceStation;
-import cn.bjfu.history.model.StationTodayData;
+import cn.bjfu.history.model.StationDataCount;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,9 @@ public interface StationMapper {
             "WHERE\n" +
             "\tdate(e.data_time) = curdate()\n" +
             "GROUP BY\n" +
-            "\tstation_id ")
-    List<StationTodayData> getStationTodayData();
+            "\tstation_id " +
+            "ORDER BY count ASC")
+    List<StationDataCount> getStationTodayData();
 
     @Select("SELECT\n" +
             "\tsys_prov_city_dist.province,COUNT(type1) count\n" +
@@ -52,5 +53,5 @@ public interface StationMapper {
             "\tdate(e.data_time) >= date_sub(curdate(),interval 1 month)\n" +
             "GROUP BY\n" +
             "\tstation_id ")
-    List<StationTodayData> getStationThisMonthData();
+    List<StationDataCount> getStationsThisMonthDataCount();
 }

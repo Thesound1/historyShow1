@@ -2,7 +2,7 @@ package cn.bjfu.history.controller;
 
 import cn.bjfu.history.model.ProvinceStation;
 import cn.bjfu.history.model.ResultModel;
-import cn.bjfu.history.model.StationTodayData;
+import cn.bjfu.history.model.StationDataCount;
 import cn.bjfu.history.model.StationType;
 import cn.bjfu.history.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +24,18 @@ public class StationController {
 
     @GetMapping("/getStationTodayData")
     public ResultModel getStationTodayData() {
-        List<StationTodayData> stationTodayData = stationService.getStationTodayData();
+        List<StationDataCount> stationTodayData = stationService.getStationTodayData();
         if (stationTodayData != null && stationTodayData.size() != 0) {
             return ResultModel.ok(stationTodayData);
         }
         return ResultModel.error("查询失败");
     }
 
-    @GetMapping("/getStationThisMonthData")
+    @GetMapping("/getStationsThisMonthDataCount")
     public ResultModel getStationThisMonthData() {
-        List<StationTodayData> stationTodayData = stationService.getStationThisMonthData();
-        if (stationTodayData != null && stationTodayData.size() != 0) {
-            return ResultModel.ok(stationTodayData);
+        List<StationDataCount> StationsThisMonthDataCount = stationService.getStationsThisMonthDataCount();
+        if (StationsThisMonthDataCount != null && StationsThisMonthDataCount.size() != 0) {
+            return ResultModel.ok(StationsThisMonthDataCount);
         }
         return ResultModel.error("查询失败");
     }

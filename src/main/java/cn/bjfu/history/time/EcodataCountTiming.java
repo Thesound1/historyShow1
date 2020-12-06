@@ -2,15 +2,15 @@ package cn.bjfu.history.time;
 
 import cn.bjfu.history.mapper.EcodataMapper;
 import cn.bjfu.history.mapper.StationMapper;
-import cn.bjfu.history.model.StationTodayData;
+import cn.bjfu.history.model.StationDataCount;
 import cn.bjfu.history.model.TCount;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import sun.security.util.Length;
 
 import java.util.List;
 
@@ -80,9 +80,9 @@ public class EcodataCountTiming {
      */
     @Scheduled(cron = "0 0/20 0/1 * * ? ")
     public void getStationTodayData() {
-        List<StationTodayData> stationTodayData = stationMapper.getStationTodayData();
+        List<StationDataCount> stationDataCount = stationMapper.getStationTodayData();
         ValueOperations valueOperations = redisTemplate.opsForValue();
-        String str = JSON.toJSON(stationTodayData).toString();
+        String str = JSON.toJSON(stationDataCount).toString();
         valueOperations.set("StationTodayData", str);
     }
 
@@ -90,11 +90,14 @@ public class EcodataCountTiming {
      * 获取各个站点当月的数据量
      */
     @Scheduled(cron = "0 0/20 0/1 * * ? ")
-    public void getStationThisMonthData() {
-        List<StationTodayData> stationTodayData = stationMapper.getStationThisMonthData();
+    public void setStationsThisMonthDataCount() {
+        List<StationDataCount> stationsDataCount = stationMapper.getStationsThisMonthDataCount();
+        int sum = stationsDataCount.stream().mapToInt(stationDataCount -> stationDataCount.getCount()).reduce(0, (x, y) -> x + y);  //计算各站点数据量的平均值
+        int average = sum/stationsDataCount.size();
+        stationsDataCount.add(new StationDataCount(0,"平均值",average));
         ValueOperations valueOperations = redisTemplate.opsForValue();
-        String str = JSON.toJSON(stationTodayData).toString();
-        valueOperations.set("StationThisMonthData", str);
+        String str = JSON.toJSON(stationsDataCount).toString();
+        valueOperations.set("StationsThisMonthDataCount", str);
     }
 
     public void saveEcodataException() {
