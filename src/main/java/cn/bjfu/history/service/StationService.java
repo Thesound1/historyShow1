@@ -12,10 +12,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StationService {
@@ -24,14 +21,28 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
-    public List<StationType> getStationTypeCount() {
-        List<StationType> stationTypeCount = new ArrayList<>();
-        stationTypeCount.add(new StationType("森林站", 39));
-        stationTypeCount.add(new StationType("湿地站", 1));
-        stationTypeCount.add(new StationType("荒漠站", 3));
-        stationTypeCount.add(new StationType("草原站", 2));
-        stationTypeCount.add(new StationType("城市站", 2));
-        return stationTypeCount;
+    public Map<String, String> getStationTypeCountPercent() {
+        Map<String, String> stationTypeCountPercent = new HashMap<>();
+        StationType stationType1 = new StationType("森林站", 39);
+        StationType stationType2 = new StationType("湿地站", 1);
+        StationType stationType3 = new StationType("荒漠站", 3);
+        StationType stationType4 = new StationType("草原站", 2);
+        StationType stationType5 = new StationType("城市站", 2);
+        Integer totalStation = stationType1.getStationCount();
+        totalStation += stationType2.getStationCount();
+        totalStation += stationType3.getStationCount();
+        totalStation += stationType4.getStationCount();
+        totalStation += stationType5.getStationCount();
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        stationTypeCountPercent.put(stationType1.getStationType(), df.format((double) stationType1.getStationCount() / (double) totalStation * 100) + "%");
+        stationTypeCountPercent.put(stationType2.getStationType(), df.format((double) stationType2.getStationCount() / (double) totalStation * 100) + "%");
+        stationTypeCountPercent.put(stationType3.getStationType(), df.format((double) stationType3.getStationCount() / (double) totalStation * 100) + "%");
+        stationTypeCountPercent.put(stationType4.getStationType(), df.format((double) stationType4.getStationCount() / (double) totalStation * 100) + "%");
+        stationTypeCountPercent.put(stationType5.getStationType(), df.format((double) stationType5.getStationCount() / (double) totalStation * 100) + "%");
+
+
+        return stationTypeCountPercent;
     }
 
     public List<StationTodayData> getStationTodayData() {
