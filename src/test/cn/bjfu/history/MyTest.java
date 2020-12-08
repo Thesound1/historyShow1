@@ -1,6 +1,8 @@
 package cn.bjfu.history;
 
+import cn.bjfu.history.model.Ecodata;
 import cn.bjfu.history.model.StationType;
+import cn.bjfu.history.service.EcodataService;
 import cn.bjfu.history.service.StationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
 public class MyTest {
     @Autowired
     private StationService stationService;
+    @Autowired
+    private EcodataService ecodataService;
 
     @Test
     public void test01() {
@@ -59,13 +64,21 @@ public class MyTest {
         totalStation += stationType4.getStationCount();
         totalStation += stationType5.getStationCount();
 
-        DecimalFormat df = new DecimalFormat("#.00");
-        stationTypeCountPercent.put(stationType1.getStationType(), df.format((double) stationType1.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType2.getStationType(), df.format((double) stationType2.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType3.getStationType(), df.format((double) stationType3.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType4.getStationType(), df.format((double) stationType4.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType5.getStationType(), df.format((double) stationType5.getStationCount() / (double) totalStation * 100) + "%");
+        DecimalFormat df = new DecimalFormat("#.##%");
+        stationTypeCountPercent.put(stationType1.getStationType(), df.format((double) stationType1.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType2.getStationType(), df.format((double) stationType2.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType3.getStationType(), df.format((double) stationType3.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType4.getStationType(), df.format((double) stationType4.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType5.getStationType(), df.format((double) stationType5.getStationCount() / (double) totalStation));
         System.out.println(stationTypeCountPercent);
 
+    }
+
+    @Test
+    public void test05() {
+        List<List> year = stationService.getCountsPercent("day");
+        System.out.println(year);
+        List<List> year1 = ecodataService.getCounts("day");
+        System.out.println(year1);
     }
 }

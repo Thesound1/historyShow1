@@ -7,6 +7,7 @@ import cn.bjfu.history.model.StationType;
 import cn.bjfu.history.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,6 +17,21 @@ import java.util.Map;
 public class StationController {
     @Autowired
     private StationService stationService;
+
+    /**
+     * 按年份、月份、日获取数据的总量
+     *
+     * @param type 可选值为：year,month,day。大小写不敏感
+     * @return
+     */
+    @GetMapping("/getCountsByDate/{type}")
+    public ResultModel getCountsPercent(@PathVariable String type) {
+        List<List> countsPercent = stationService.getCountsPercent(type);
+        if (countsPercent != null && countsPercent.size() != 0) {
+            return ResultModel.ok(countsPercent);
+        }
+        return ResultModel.error("查询失败");
+    }
 
     /**
      * 获取各站点类型的数量的百分比

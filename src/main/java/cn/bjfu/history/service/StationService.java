@@ -21,6 +21,56 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
+
+    public List<List> getCountsPercent(String type) {
+        List listResult = new ArrayList<>();
+        List timeResult = new ArrayList<>();
+        List countResult = new ArrayList<>();
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String result;
+        if ("Day".equalsIgnoreCase(type)) {
+            result = (String) valueOperations.get("EcodataDay");
+        } else if ("Month".equalsIgnoreCase(type)) {
+            result = (String) valueOperations.get("EcodataMonth");
+        } else if ("Year".equalsIgnoreCase(type)) {
+            result = (String) valueOperations.get("EcodataYear");
+        } else {
+            result = "";
+        }
+
+        Integer totalCount = 0;
+        List<TCount> tCounts = JSON.parseArray(result, TCount.class);
+
+        if ("Year".equalsIgnoreCase(type)) {
+            DecimalFormat df = new DecimalFormat("#.##%");
+            if (tCounts != null && tCounts.size() != 0) {
+                for (TCount tCount : tCounts) {
+                    String count = tCount.getCount();
+                    totalCount += Integer.valueOf(count);
+                }
+                for (TCount tCount : tCounts) {
+                    String date = tCount.getDate();
+                    Integer count = Integer.valueOf(tCount.getCount());
+
+                    timeResult.add(date);
+                    countResult.add(df.format((double) count / (double) totalCount));
+                }
+            }
+        } else {
+            for (TCount tCount : tCounts) {
+                String date = tCount.getDate();
+                String count = tCount.getCount();
+                timeResult.add(date);
+                countResult.add(count);
+
+            }
+        }
+        listResult.add(timeResult);
+        listResult.add(countResult);
+        return listResult;
+    }
+
+
     public Map<String, String> getStationTypeCountPercent() {
         Map<String, String> stationTypeCountPercent = new HashMap<>();
         StationType stationType1 = new StationType("森林站", 39);
@@ -34,12 +84,12 @@ public class StationService {
         totalStation += stationType4.getStationCount();
         totalStation += stationType5.getStationCount();
 
-        DecimalFormat df = new DecimalFormat("#.00");
-        stationTypeCountPercent.put(stationType1.getStationType(), df.format((double) stationType1.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType2.getStationType(), df.format((double) stationType2.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType3.getStationType(), df.format((double) stationType3.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType4.getStationType(), df.format((double) stationType4.getStationCount() / (double) totalStation * 100) + "%");
-        stationTypeCountPercent.put(stationType5.getStationType(), df.format((double) stationType5.getStationCount() / (double) totalStation * 100) + "%");
+        DecimalFormat df = new DecimalFormat("#.##%");
+        stationTypeCountPercent.put(stationType1.getStationType(), df.format((double) stationType1.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType2.getStationType(), df.format((double) stationType2.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType3.getStationType(), df.format((double) stationType3.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType4.getStationType(), df.format((double) stationType4.getStationCount() / (double) totalStation));
+        stationTypeCountPercent.put(stationType5.getStationType(), df.format((double) stationType5.getStationCount() / (double) totalStation));
 
 
         return stationTypeCountPercent;
