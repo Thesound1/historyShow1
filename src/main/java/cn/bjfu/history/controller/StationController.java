@@ -3,8 +3,9 @@ package cn.bjfu.history.controller;
 import cn.bjfu.history.model.ProvinceStation;
 import cn.bjfu.history.model.ResultModel;
 import cn.bjfu.history.model.StationDataCount;
-import cn.bjfu.history.model.StationType;
 import cn.bjfu.history.service.StationService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,8 @@ public class StationController {
      * @param type 可选值为：year,month,day。大小写不敏感
      * @return
      */
+    @ApiOperation(value = "按时间划分，获取数据量")
+    @ApiImplicitParam(name = "type", value = "时间划分范围，具体为年，月，日。可选值为：year,month,day。大小写不敏感", required = true, paramType = "path")
     @GetMapping("/getCountsByDate/{type}")
     public ResultModel getCountsPercent(@PathVariable String type) {
         List<List> countsPercent = stationService.getCountsPercent(type);
@@ -39,6 +42,7 @@ public class StationController {
      *
      * @return
      */
+    @ApiOperation("获取各种类型的生态站，在数量上的占比情况，如森林站占比80%，城市站占比5%")
     @GetMapping("/getStationTypeCountPercent")
     public ResultModel getStationTypeCount() {
         Map<String, String> stationTypeCountPercent = stationService.getStationTypeCountPercent();
@@ -53,6 +57,7 @@ public class StationController {
      *
      * @return
      */
+    @ApiOperation("今日各个站点收集的数据")
     @GetMapping("/getStationTodayData")
     public ResultModel getStationTodayData() {
         List<StationDataCount> stationTodayData = stationService.getStationTodayData();
@@ -64,8 +69,10 @@ public class StationController {
 
     /**
      * 本月各站点收集数据量
+     *
      * @return
      */
+    @ApiOperation("本月各站点收集数据量")
     @GetMapping("/getStationsThisMonthDataCount")
     public ResultModel getStationThisMonthData() {
         List<StationDataCount> StationsThisMonthDataCount = stationService.getStationsThisMonthDataCount();
@@ -80,6 +87,7 @@ public class StationController {
      *
      * @return
      */
+    @ApiOperation("各个省份的站点数，如北京的生态站的数量为5")
     @GetMapping("/getProvinceStationCount")
     public ResultModel getProvinceStationCount() {
         List<ProvinceStation> provinceStationCountrovinceStation = stationService.getProvinceStationCount();
@@ -94,6 +102,7 @@ public class StationController {
      *
      * @return
      */
+    @ApiOperation("今日与昨日，收集的数据量的变化率")
     @GetMapping("/differenceValue")
     public ResultModel differenceValue() {
         String differenceValue = stationService.getDifferenceValue();

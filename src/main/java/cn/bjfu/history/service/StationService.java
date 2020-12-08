@@ -35,7 +35,7 @@ public class StationService {
         } else if ("Year".equalsIgnoreCase(type)) {
             result = (String) valueOperations.get("EcodataYear");
         } else {
-            result = "";
+            return null;
         }
 
         Integer totalCount = 0;
@@ -137,9 +137,9 @@ public class StationService {
 
         double a = yesterdayCount;
         double b = todayCount;
-        double result = (b - a) / a * 100;
-        DecimalFormat df = new DecimalFormat("#.00");
-        String ret = df.format(result) + "%";
+        double result = (b - a) / a;
+        DecimalFormat df = new DecimalFormat("#.##%");
+        String ret = df.format(result) ;
         return ret;
     }
 }
