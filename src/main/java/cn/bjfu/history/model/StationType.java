@@ -17,4 +17,20 @@ public class StationType {
         this.stationType = stationType;
         this.stationCount = stationCount;
     }
+
+    public String getStationType() {
+        return stationType;
+    }
+
+    public void setStationType(String stationType) {
+        this.stationType = stationType;
+    }
+
+    public Integer getStationCount() {
+        return stationCount;
+    }
+
+    public void setStationCount(Integer stationCount) {
+        this.stationCount = stationCount;
+    }
 }

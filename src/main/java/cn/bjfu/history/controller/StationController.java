@@ -7,21 +7,52 @@ import cn.bjfu.history.model.StationType;
 import cn.bjfu.history.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class StationController {
     @Autowired
     private StationService stationService;
 
-    @GetMapping("/getStationTypeCount")
-    public ResultModel getStationTypeCount() {
-        List<StationType> stationTypeCount = stationService.getStationTypeCount();
-        return ResultModel.ok(stationTypeCount);
+    /**
+     * 按年份、月份、日获取数据的总量
+     *
+     * @param type 可选值为：year,month,day。大小写不敏感
+     * @return
+     */
+    @GetMapping("/getCountsByDate/{type}")
+    public ResultModel getCountsPercent(@PathVariable String type) {
+        List<List> countsPercent = stationService.getCountsPercent(type);
+        if (countsPercent != null && countsPercent.size() != 0) {
+            return ResultModel.ok(countsPercent);
+        }
+        return ResultModel.error("查询失败");
     }
 
+
+    /**
+     * 获取各站点类型的数量的百分比
+     *
+     * @return
+     */
+    @GetMapping("/getStationTypeCountPercent")
+    public ResultModel getStationTypeCount() {
+        Map<String, String> stationTypeCountPercent = stationService.getStationTypeCountPercent();
+        if (stationTypeCountPercent != null && stationTypeCountPercent.size() != 0) {
+            return ResultModel.ok(stationTypeCountPercent);
+        }
+        return ResultModel.error("查询失败");
+    }
+
+    /**
+     * 今日各个站点收集的数据
+     *
+     * @return
+     */
     @GetMapping("/getStationTodayData")
     public ResultModel getStationTodayData() {
         List<StationDataCount> stationTodayData = stationService.getStationTodayData();
@@ -31,6 +62,10 @@ public class StationController {
         return ResultModel.error("查询失败");
     }
 
+    /**
+     * 本月各站点收集数据量
+     * @return
+     */
     @GetMapping("/getStationsThisMonthDataCount")
     public ResultModel getStationThisMonthData() {
         List<StationDataCount> StationsThisMonthDataCount = stationService.getStationsThisMonthDataCount();
@@ -40,6 +75,11 @@ public class StationController {
         return ResultModel.error("查询失败");
     }
 
+    /**
+     * 各个省份的站点数
+     *
+     * @return
+     */
     @GetMapping("/getProvinceStationCount")
     public ResultModel getProvinceStationCount() {
         List<ProvinceStation> provinceStationCountrovinceStation = stationService.getProvinceStationCount();
@@ -49,6 +89,11 @@ public class StationController {
         return ResultModel.error("查询失败");
     }
 
+    /**
+     * 今日与昨日，收集的数据量的变化率
+     *
+     * @return
+     */
     @GetMapping("/differenceValue")
     public ResultModel differenceValue() {
         String differenceValue = stationService.getDifferenceValue();
