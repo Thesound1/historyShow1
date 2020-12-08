@@ -100,7 +100,7 @@ public class StationService {
         String result = (String) valueOperations.get("StationTodayData");
         List<StationDataCount> tCounts = JSON.parseArray(result, StationDataCount.class);
         if (tCounts != null && tCounts.size() != 0) {
-            Collections.sort(tCounts, new Comparator<StationDataCount>() {
+            Collections.sort(tCounts, new Comparator<StationDataCount>(){
                 public int compare(StationDataCount o1, StationDataCount o2) {
                     if (o1.getCount() > o2.getCount()) {
                         return -1;
