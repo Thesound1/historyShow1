@@ -62,7 +62,6 @@ public class StationService {
                 String count = tCount.getCount();
                 timeResult.add(date);
                 countResult.add(count);
-
             }
         }
         listResult.add(timeResult);
@@ -141,5 +140,19 @@ public class StationService {
         DecimalFormat df = new DecimalFormat("#.##%");
         String ret = df.format(result) ;
         return ret;
+    }
+
+    public String getEcodatayesterdayCount(){
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String yesterdayCountStr = String.valueOf(valueOperations.get("EcodataYesterday"));
+        Double yesterdayCount = Double.valueOf(yesterdayCountStr);
+        return String.format("%.2f", yesterdayCount/10000);
+    }
+
+    public String getEcodatatodayCount(){
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String todayCountStr = String.valueOf(valueOperations.get("EcodataToday"));
+        Double todayCount = Double.valueOf(todayCountStr);
+        return String.format("%.2f", todayCount/10000);
     }
 }

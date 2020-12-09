@@ -20,10 +20,6 @@ public class MyTest {
     @Autowired
     private EcodataService ecodataService;
 
-    @Test
-    public void test01() {
-//        System.out.println(stationService.getStationTypeCount());
-    }
 
     @Test
     public void test02() {
@@ -80,5 +76,11 @@ public class MyTest {
         System.out.println(year);
         List<List> year1 = ecodataService.getCounts("day");
         System.out.println(year1);
+    }
+
+    @Test
+    public void test06(){
+        System.out.println(stationService.getEcodatatodayCount());
+        System.out.println(stationService.getEcodatayesterdayCount());
     }
 }

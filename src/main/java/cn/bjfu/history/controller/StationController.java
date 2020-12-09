@@ -112,4 +112,27 @@ public class StationController {
         }
         return ResultModel.error("查询失败");
     }
+
+    /**
+     * 今日数据量
+     * @return
+     */
+    @ApiOperation("今日数据量")
+    @GetMapping("/getEcodatatodayCount")
+    public ResultModel getEcodatatodayCount(){
+        String ecodatatodayCount = stationService.getEcodatatodayCount();
+        return ResultModel.ok(ecodatatodayCount);
+    }
+
+    /**
+     * 昨日数据量
+     * @return
+     */
+    @ApiOperation("昨日数据量")
+    @GetMapping("/getEcodatayesterdayCount")
+    public ResultModel getEcodatayesterdayCount(){
+        String ecodatayesterdayCount = stationService.getEcodatayesterdayCount();
+        return ResultModel.ok(ecodatayesterdayCount);
+
+    }
 }
