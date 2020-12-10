@@ -35,6 +35,19 @@ public class RedisSetByHand {
         ecodataCountTiming.saveEcodataByYear();
     }
 
+    @GetMapping("/setStationTodayData")
+    public void setStationTodayData() {
+        ecodataCountTiming.getStationTodayData();
+    }
+
+    @GetMapping("/save")
+    public void save() {
+        ecodataCountTiming.saveEcodataCounts();
+        ecodataCountTiming.saveEcodataYesterday();
+        ecodataCountTiming.saveEcodataToday();
+        ecodataCountTiming.saveEcodataException();
+    }
+
     @GetMapping("/setStationsThisMonthDataCount")
     public String InitStationsThisMonthData() {
         ecodataCountTiming.setStationsThisMonthDataCount();
