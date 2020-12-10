@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,8 +80,28 @@ public class MyTest {
     }
 
     @Test
-    public void test06(){
+    public void test06() {
         System.out.println(stationService.getEcodatatodayCount());
         System.out.println(stationService.getEcodatayesterdayCount());
+    }
+
+    @Test
+    public void test07() {
+        ArrayList<Integer> integers = new ArrayList<>();
+        integers.add(1);
+        integers.add(2);
+        integers.add(3);
+        integers.add(4);
+        integers.add(5);
+        integers.add(6);
+        integers.add(7);
+        integers.add(8);
+        integers.add(9);
+        integers.add(10);
+        integers.add(11);
+        integers.add(12);
+//        System.out.println(integers.size()-6);
+        System.out.println(integers.subList(integers.size() - 6, integers.size()));
+
     }
 }

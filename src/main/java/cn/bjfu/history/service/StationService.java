@@ -29,16 +29,16 @@ public class StationService {
             result = (String) valueOperations.get("EcodataDay");
         } else if ("Month".equalsIgnoreCase(type)) {
             result = (String) valueOperations.get("EcodataMonth");
-        } else if ("Year".equalsIgnoreCase(type)) {
-            result = (String) valueOperations.get("EcodataYear");
+        } else if ("HalfYear".equalsIgnoreCase(type)) {
+            result = (String) valueOperations.get("EcodataMonth");
         } else {
             return null;
         }
 
         Integer totalCount = 0;
         List<TCount> tCounts = JSON.parseArray(result, TCount.class);
-
-        if ("Year".equalsIgnoreCase(type)) {
+        if ("HalfYear".equalsIgnoreCase(type)) {
+            tCounts = tCounts.subList(tCounts.size() - 6, tCounts.size());
             DecimalFormat df = new DecimalFormat("#.##%");
             if (tCounts != null && tCounts.size() != 0) {
                 for (TCount tCount : tCounts) {
@@ -158,5 +158,26 @@ public class StationService {
         String eachCityTodayDataCount = (String) valueOperations.get("eachCityTodayDataCount");
         List<CityDataCount> cityDataCount = JSON.parseArray(eachCityTodayDataCount, CityDataCount.class);
         return cityDataCount;
+    }
+
+//    public String getStationsThisMonthDataCountAvg() {
+//        String stationsThisMonthDataCountAvg = (String) redisTemplate.opsForValue().get("StationsThisMonthDataCountAvg");
+//        return stationsThisMonthDataCountAvg;
+//    }
+
+    /**
+     * 用来显示环境监测指标
+     *
+     * @return
+     */
+    public List<String> getEnvironmentIndex() {
+        List<String> environmentIndex = new ArrayList<>();
+        environmentIndex.add("温度");
+        environmentIndex.add("湿度");
+        environmentIndex.add("风速");
+        environmentIndex.add("降水量");
+        environmentIndex.add("PM2.5");
+        Collections.shuffle(environmentIndex);
+        return environmentIndex;
     }
 }

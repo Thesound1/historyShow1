@@ -27,7 +27,7 @@ public class StationController {
      * @return
      */
     @ApiOperation(value = "按时间划分，获取数据量")
-    @ApiImplicitParam(name = "type", value = "时间划分范围，具体为年，月，日。可选值为：year,month,day。大小写不敏感", required = true, paramType = "path")
+    @ApiImplicitParam(name = "type", value = "时间划分范围，具体为年，月，日。可选值为：HalfYear,month,day。大小写不敏感", required = true, paramType = "path")
     @GetMapping("/getCountsByDate/{type}")
     public ResultModel getCountsPercent(@PathVariable String type) {
         List<List> countsPercent = stationService.getCountsPercent(type);
@@ -145,6 +145,26 @@ public class StationController {
         List<CityDataCount> cityDataCounts = stationService.eachCityTodayDataCount();
         if (cityDataCounts != null && cityDataCounts.size() != 0) {
             return ResultModel.ok(cityDataCounts);
+        }
+        return ResultModel.error("查询失败");
+    }
+
+//    @ApiOperation("本月各个站点收集收集数量的平均值")
+//    @GetMapping("/getStationsThisMonthDataCountAvg")
+//    public ResultModel getStationsThisMonthDataCountAvg() {
+//        String stationsThisMonthDataCountAvg = stationService.getStationsThisMonthDataCountAvg();
+//        if (stationsThisMonthDataCountAvg != null && !"".equals(stationsThisMonthDataCountAvg)) {
+//            return ResultModel.ok(stationsThisMonthDataCountAvg);
+//        }
+//        return ResultModel.error("查询失败");
+//    }
+
+    @ApiOperation("环境监测指标，如温度，湿度，降水量")
+    @GetMapping("/getEnvironmentIndex")
+    public ResultModel getEnvironmentIndex() {
+        List<String> environmentIndex = stationService.getEnvironmentIndex();
+        if (environmentIndex != null && environmentIndex.size() != 0) {
+            return ResultModel.ok(environmentIndex);
         }
         return ResultModel.error("查询失败");
     }

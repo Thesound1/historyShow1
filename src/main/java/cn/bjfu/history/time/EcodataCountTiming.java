@@ -92,12 +92,12 @@ public class EcodataCountTiming {
     @Scheduled(cron = "0 0/20 0/1 * * ? ")
     public void setStationsThisMonthDataCount() {
         List<StationDataCount> stationsDataCount = stationMapper.getStationsThisMonthDataCount();
-        int sum = stationsDataCount.stream().mapToInt(stationDataCount -> stationDataCount.getCount()).reduce(0, (x, y) -> x + y);  //计算各站点数据量的平均值
-        int average = sum / stationsDataCount.size();
-        stationsDataCount.add(new StationDataCount(0, "平均值", average));
+//        int sum = stationsDataCount.stream().mapToInt(stationDataCount -> stationDataCount.getCount()).reduce(0, (x, y) -> x + y);  //计算各站点数据量的平均值
+//        int average = sum / stationsDataCount.size();
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String str = JSON.toJSON(stationsDataCount).toString();
         valueOperations.set("StationsThisMonthDataCount", str);
+//        valueOperations.set("StationsThisMonthDataCountAvg", String.valueOf(average));
     }
 
     public void saveEcodataException() {
@@ -107,7 +107,10 @@ public class EcodataCountTiming {
         valueOperations.set("EcodataException", str);
     }
 
-    @Scheduled(cron = "0 0/3 * * * ?")
+    /**
+     * 获取各个城市今日收集的数据量
+     */
+    @Scheduled(cron = "0 0/20 0/1 * * ? ")
     public void getEachCityTodayDataCount() {
         List<CityDataCount> eachCityTodayDataCount = stationMapper.getEachCityTodayDataCount();
         redisTemplate.opsForValue().set("eachCityTodayDataCount", JSON.toJSON(eachCityTodayDataCount).toString());
