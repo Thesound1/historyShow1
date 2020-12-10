@@ -1,5 +1,6 @@
 package cn.bjfu.history.controller;
 
+import cn.bjfu.history.model.CityDataCount;
 import cn.bjfu.history.model.ProvinceStation;
 import cn.bjfu.history.model.ResultModel;
 import cn.bjfu.history.model.StationDataCount;
@@ -115,24 +116,36 @@ public class StationController {
 
     /**
      * 今日数据量
+     *
      * @return
      */
     @ApiOperation("今日数据量")
     @GetMapping("/getEcodatatodayCount")
-    public ResultModel getEcodatatodayCount(){
+    public ResultModel getEcodatatodayCount() {
         String ecodatatodayCount = stationService.getEcodatatodayCount();
         return ResultModel.ok(ecodatatodayCount);
     }
 
     /**
      * 昨日数据量
+     *
      * @return
      */
     @ApiOperation("昨日数据量")
     @GetMapping("/getEcodatayesterdayCount")
-    public ResultModel getEcodatayesterdayCount(){
+    public ResultModel getEcodatayesterdayCount() {
         String ecodatayesterdayCount = stationService.getEcodatayesterdayCount();
         return ResultModel.ok(ecodatayesterdayCount);
 
+    }
+
+    @ApiOperation("统计各城市今日的数据收集量")
+    @GetMapping("/getEachCityTodayDataCount")
+    public ResultModel getEachCityTodayDataCount() {
+        List<CityDataCount> cityDataCounts = stationService.eachCityTodayDataCount();
+        if (cityDataCounts != null && cityDataCounts.size() != 0) {
+            return ResultModel.ok(cityDataCounts);
+        }
+        return ResultModel.error("查询失败");
     }
 }

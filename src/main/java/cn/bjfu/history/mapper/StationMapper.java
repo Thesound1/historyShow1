@@ -1,5 +1,6 @@
 package cn.bjfu.history.mapper;
 
+import cn.bjfu.history.model.CityDataCount;
 import cn.bjfu.history.model.ProvinceStation;
 import cn.bjfu.history.model.StationDataCount;
 import org.apache.ibatis.annotations.Mapper;
@@ -54,4 +55,19 @@ public interface StationMapper {
             "GROUP BY\n" +
             "\tstation_id ")
     List<StationDataCount> getStationsThisMonthDataCount();
+
+    @Select("SELECT\n" +
+            "\tsys_prov_city_dist.city city_name,\n" +
+            "\tCOUNT(*) data_count \n" +
+            "FROM\n" +
+            "\tecodata,\n" +
+            "\tstation_detail,\n" +
+            "\tsys_prov_city_dist \n" +
+            "WHERE\n" +
+            "\tsys_prov_city_dist.id = station_detail.type2 \n" +
+            "\tAND ecodata.station_id = station_detail.station_id \n" +
+            "\tAND date( ecodata.data_time ) = CURDATE() \n" +
+            "GROUP BY\n" +
+            "\tstation_detail.type2")
+    List<CityDataCount> getEachCityTodayDataCount();
 }

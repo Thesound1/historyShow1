@@ -2,6 +2,7 @@ package cn.bjfu.history.time;
 
 import cn.bjfu.history.mapper.EcodataMapper;
 import cn.bjfu.history.mapper.StationMapper;
+import cn.bjfu.history.model.CityDataCount;
 import cn.bjfu.history.model.StationDataCount;
 import cn.bjfu.history.model.TCount;
 import com.alibaba.fastjson.JSON;
@@ -43,7 +44,7 @@ public class EcodataCountTiming {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-    public void saveEcodataByYear() {
+    public void saveEcodataByHalfYear() {
         List<TCount> countByYear = ecodataMapper.getCountByYear();
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String str = JSON.toJSON(countByYear).toString();
@@ -92,8 +93,8 @@ public class EcodataCountTiming {
     public void setStationsThisMonthDataCount() {
         List<StationDataCount> stationsDataCount = stationMapper.getStationsThisMonthDataCount();
         int sum = stationsDataCount.stream().mapToInt(stationDataCount -> stationDataCount.getCount()).reduce(0, (x, y) -> x + y);  //计算各站点数据量的平均值
-        int average = sum/stationsDataCount.size();
-        stationsDataCount.add(new StationDataCount(0,"平均值",average));
+        int average = sum / stationsDataCount.size();
+        stationsDataCount.add(new StationDataCount(0, "平均值", average));
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String str = JSON.toJSON(stationsDataCount).toString();
         valueOperations.set("StationsThisMonthDataCount", str);
@@ -104,5 +105,11 @@ public class EcodataCountTiming {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String str = JSON.toJSON(exceptionFlag).toString();
         valueOperations.set("EcodataException", str);
+    }
+
+    @Scheduled(cron = "0 0/3 * * * ?")
+    public void getEachCityTodayDataCount() {
+        List<CityDataCount> eachCityTodayDataCount = stationMapper.getEachCityTodayDataCount();
+        redisTemplate.opsForValue().set("eachCityTodayDataCount", JSON.toJSON(eachCityTodayDataCount).toString());
     }
 }

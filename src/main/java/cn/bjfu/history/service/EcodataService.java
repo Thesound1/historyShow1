@@ -31,8 +31,8 @@ public class EcodataService {
             result = (String) valueOperations.get("EcodataDay");
         } else if ("Month".equalsIgnoreCase(type)) {
             result = (String) valueOperations.get("EcodataMonth");
-        } else if ("Year".equalsIgnoreCase(type)) {
-            result = (String) valueOperations.get("EcodataYear");
+        } else if ("pastHalfYear".equalsIgnoreCase(type)) {
+            result = (String) valueOperations.get("EcodataHalfYear");
         } else {
             result = "";
         }

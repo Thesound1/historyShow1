@@ -1,10 +1,7 @@
 package cn.bjfu.history.service;
 
 import cn.bjfu.history.mapper.StationMapper;
-import cn.bjfu.history.model.ProvinceStation;
-import cn.bjfu.history.model.StationDataCount;
-import cn.bjfu.history.model.StationType;
-import cn.bjfu.history.model.TCount;
+import cn.bjfu.history.model.*;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -99,7 +96,7 @@ public class StationService {
         String result = (String) valueOperations.get("StationTodayData");
         List<StationDataCount> tCounts = JSON.parseArray(result, StationDataCount.class);
         if (tCounts != null && tCounts.size() != 0) {
-            Collections.sort(tCounts, new Comparator<StationDataCount>(){
+            Collections.sort(tCounts, new Comparator<StationDataCount>() {
                 public int compare(StationDataCount o1, StationDataCount o2) {
                     if (o1.getCount() > o2.getCount()) {
                         return -1;
@@ -138,21 +135,28 @@ public class StationService {
         double b = todayCount;
         double result = (b - a) / a;
         DecimalFormat df = new DecimalFormat("#.##%");
-        String ret = df.format(result) ;
+        String ret = df.format(result);
         return ret;
     }
 
-    public String getEcodatayesterdayCount(){
+    public String getEcodatayesterdayCount() {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String yesterdayCountStr = String.valueOf(valueOperations.get("EcodataYesterday"));
         Double yesterdayCount = Double.valueOf(yesterdayCountStr);
-        return String.format("%.2f", yesterdayCount/10000);
+        return String.format("%.2f", yesterdayCount / 10000);
     }
 
-    public String getEcodatatodayCount(){
+    public String getEcodatatodayCount() {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         String todayCountStr = String.valueOf(valueOperations.get("EcodataToday"));
         Double todayCount = Double.valueOf(todayCountStr);
-        return String.format("%.2f", todayCount/10000);
+        return String.format("%.2f", todayCount / 10000);
+    }
+
+    public List<CityDataCount> eachCityTodayDataCount() {
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String eachCityTodayDataCount = (String) valueOperations.get("eachCityTodayDataCount");
+        List<CityDataCount> cityDataCount = JSON.parseArray(eachCityTodayDataCount, CityDataCount.class);
+        return cityDataCount;
     }
 }
