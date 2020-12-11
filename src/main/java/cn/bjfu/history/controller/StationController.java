@@ -168,4 +168,41 @@ public class StationController {
         }
         return ResultModel.error("查询失败");
     }
+
+    @ApiOperation("获取近6个月收集数据的总量")
+    @GetMapping("/getLastSixMonthsDataCount")
+    public ResultModel getLastSixMonthsDataCount() {
+        Integer lastSixMonthsDataCount = stationService.getLastSixMonthsDataCount();
+        if (lastSixMonthsDataCount != null) {
+            return ResultModel.ok(lastSixMonthsDataCount);
+        }
+        return ResultModel.error("查询失败");
+    }
+
+    @ApiOperation("当月数据的丢失量")
+    @GetMapping("/getCurrentMonthAbnormalDataCount")
+    public ResultModel getCurrentMonthAbnormalDataCount() {
+        Integer currentMonthAbnormalDataCount = stationService.getCurrentMonthAbnormalDataCount();
+        return ResultModel.ok(currentMonthAbnormalDataCount);
+    }
+
+    @ApiOperation("当月数据收集量")
+    @GetMapping("/getCurrentMonthDataCount")
+    public ResultModel getCurrentMonthDataCount() {
+        String currentMonthDataCount = stationService.getCurrentMonthDataCount();
+        if (currentMonthDataCount != null && !"".equals(currentMonthDataCount)) {
+            return ResultModel.ok(currentMonthDataCount);
+        }
+        return ResultModel.error("查询失败");
+    }
+
+    @ApiOperation("系统运行时长，单位：天")
+    @GetMapping("/getExecutionDays")
+    public ResultModel getExecutionDays() {
+        String executionDays = stationService.getExecutionDays();
+        if (executionDays != null && !"".equals(executionDays)) {
+            return ResultModel.ok(executionDays);
+        }
+        return ResultModel.error("查询失败");
+    }
 }

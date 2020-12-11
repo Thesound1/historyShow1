@@ -17,7 +17,7 @@ public class StationService {
     private RedisTemplate redisTemplate;
     @Autowired
     private StationMapper stationMapper;
-
+    private Integer dataCount = 0;
 
     public List<List> getCountsPercent(String type) {
         List listResult = new ArrayList<>();
@@ -45,6 +45,7 @@ public class StationService {
                     String count = tCount.getCount();
                     totalCount += Integer.valueOf(count);
                 }
+                dataCount = totalCount;
                 for (TCount tCount : tCounts) {
                     String date = tCount.getDate();
                     Integer count = Integer.valueOf(tCount.getCount());
@@ -59,6 +60,10 @@ public class StationService {
                 String count = tCount.getCount();
                 timeResult.add(date);
                 countResult.add(count);
+            }
+            if ("Month".equalsIgnoreCase(type)) {
+                String currentMonthDataCount = (String) countResult.get(countResult.size() - 1);
+                redisTemplate.opsForValue().set("currentMonthDataCount", currentMonthDataCount);
             }
         }
         listResult.add(timeResult);
@@ -179,5 +184,27 @@ public class StationService {
         environmentIndex.add("PM2.5");
         Collections.shuffle(environmentIndex);
         return environmentIndex;
+    }
+
+    public Integer getLastSixMonthsDataCount() {
+        return dataCount;
+    }
+
+    public Integer getCurrentMonthAbnormalDataCount() {
+        Integer currentMonthAbnormalDataCount = stationMapper.getCurrentMonthAbnormalDataCount();
+        if (currentMonthAbnormalDataCount == null) {
+            return 0;
+        }
+        return currentMonthAbnormalDataCount;
+    }
+
+    public String getCurrentMonthDataCount() {
+        String currentMonthDataCount = (String) redisTemplate.opsForValue().get("currentMonthDataCount");
+        return currentMonthDataCount;
+    }
+
+    public String getExecutionDays() {
+        return String.valueOf(redisTemplate.opsForValue().get("executionDays"));
+
     }
 }

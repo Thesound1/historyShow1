@@ -70,4 +70,23 @@ public interface StationMapper {
             "GROUP BY\n" +
             "\tstation_detail.type2")
     List<CityDataCount> getEachCityTodayDataCount();
+
+    @Select("SELECT\n" +
+            "\tSUM( lose_num ) \n" +
+            "FROM\n" +
+            "\tabnormal_log \n" +
+            "WHERE\n" +
+            "\tMONTH ( ab_begin_time ) = MONTH (\n" +
+            "\tCURDATE()) \n" +
+            "\tAND YEAR ( ab_begin_time )= YEAR (\n" +
+            "\tCURDATE())")
+    Integer getCurrentMonthAbnormalDataCount();
+
+    @Select("SELECT\n" +
+            "\tDATEDIFF(\n" +
+            "\t\tMAX( data_time ),\n" +
+            "\tMIN( data_time )) \n" +
+            "FROM\n" +
+            "\tecodata")
+    Integer getExecutionDays();
 }

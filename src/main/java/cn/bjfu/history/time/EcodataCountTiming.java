@@ -115,4 +115,10 @@ public class EcodataCountTiming {
         List<CityDataCount> eachCityTodayDataCount = stationMapper.getEachCityTodayDataCount();
         redisTemplate.opsForValue().set("eachCityTodayDataCount", JSON.toJSON(eachCityTodayDataCount).toString());
     }
+
+    @Scheduled(cron = "0 0/2 * * * ?")
+    public void getExecutionDays() {
+        Integer executionDays = stationMapper.getExecutionDays();
+        redisTemplate.opsForValue().set("executionDays", executionDays);
+    }
 }

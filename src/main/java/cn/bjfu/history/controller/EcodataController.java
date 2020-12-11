@@ -18,15 +18,15 @@ public class EcodataController {
     @Autowired
     private EcodataService ecodataService;
 
-    @GetMapping("/getCounts/{type}")
-    public ResultModel getCounts(@PathVariable String type) {
-        List<List> countByDay = ecodataService.getCounts(type);
-        if (countByDay.size() == 0) {
-            return ResultModel.error("500", "服务器报错");
-        } else {
-            return ResultModel.ok(countByDay);
-        }
-    }
+//    @GetMapping("/getCounts/{type}")
+//    public ResultModel getCounts(@PathVariable String type) {
+//        List<List> countByDay = ecodataService.getCounts(type);
+//        if (countByDay.size() == 0) {
+//            return ResultModel.error("500", "服务器报错");
+//        } else {
+//            return ResultModel.ok(countByDay);
+//        }
+//    }
 
     @GetMapping("/totalCount")
     public ResultModel totalCount() {
