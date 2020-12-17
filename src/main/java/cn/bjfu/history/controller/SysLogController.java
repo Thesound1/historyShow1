@@ -40,7 +40,7 @@ public class SysLogController {
         if (sysLogTotalCount == null) {
             return ResultModel.error("查询失败");
         }
-            return ResultModel.ok(sysLogTotalCount);
+        return ResultModel.ok(sysLogTotalCount + 10);
     }
 
 }
