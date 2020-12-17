@@ -172,8 +172,8 @@ public class StationController {
     @ApiOperation("获取近6个月收集数据的总量")
     @GetMapping("/getLastSixMonthsDataCount")
     public ResultModel getLastSixMonthsDataCount() {
-        Integer lastSixMonthsDataCount = stationService.getLastSixMonthsDataCount();
-        if (lastSixMonthsDataCount != null) {
+        String lastSixMonthsDataCount = stationService.getLastSixMonthsDataCount();
+        if (lastSixMonthsDataCount != null && !"".equals(lastSixMonthsDataCount)) {
             return ResultModel.ok(lastSixMonthsDataCount);
         }
         return ResultModel.error("查询失败");

@@ -72,14 +72,15 @@ public interface StationMapper {
     List<CityDataCount> getEachCityTodayDataCount();
 
     @Select("SELECT\n" +
-            "\tSUM( lose_num ) \n" +
+            "\tCOUNT(*) \n" +
             "FROM\n" +
             "\tabnormal_log \n" +
             "WHERE\n" +
-            "\tMONTH ( ab_begin_time ) = MONTH (\n" +
+            "\tMONTH ( ab_value_time ) = MONTH (\n" +
             "\tCURDATE()) \n" +
-            "\tAND YEAR ( ab_begin_time )= YEAR (\n" +
-            "\tCURDATE())")
+            "\tAND YEAR ( ab_value_time )= YEAR (\n" +
+            "\tCURDATE()) \n" +
+            "\tAND abnormal_type = 2")
     Integer getCurrentMonthAbnormalDataCount();
 
     @Select("SELECT\n" +

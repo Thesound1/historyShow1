@@ -17,7 +17,6 @@ public class StationService {
     private RedisTemplate redisTemplate;
     @Autowired
     private StationMapper stationMapper;
-    private Integer dataCount = 0;
 
     public List<List> getCountsPercent(String type) {
         List listResult = new ArrayList<>();
@@ -45,7 +44,7 @@ public class StationService {
                     String count = tCount.getCount();
                     totalCount += Integer.valueOf(count);
                 }
-                dataCount = totalCount;
+                redisTemplate.opsForValue().set("lastSixMonthsDataCount", totalCount);
                 for (TCount tCount : tCounts) {
                     String date = tCount.getDate();
                     Integer count = Integer.valueOf(tCount.getCount());
@@ -186,8 +185,9 @@ public class StationService {
         return environmentIndex;
     }
 
-    public Integer getLastSixMonthsDataCount() {
-        return dataCount;
+    public String getLastSixMonthsDataCount() {
+        String lastSixMonthsDataCount = String.valueOf(redisTemplate.opsForValue().get("lastSixMonthsDataCount"));
+        return lastSixMonthsDataCount;
     }
 
     public Integer getCurrentMonthAbnormalDataCount() {
@@ -199,7 +199,7 @@ public class StationService {
     }
 
     public String getCurrentMonthDataCount() {
-        String currentMonthDataCount = (String) redisTemplate.opsForValue().get("currentMonthDataCount");
+        String currentMonthDataCount = String.valueOf(redisTemplate.opsForValue().get("currentMonthDataCount"));
         return currentMonthDataCount;
     }
 
