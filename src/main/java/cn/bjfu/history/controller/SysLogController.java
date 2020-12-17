@@ -37,11 +37,10 @@ public class SysLogController {
     @GetMapping("/getPersonCountToday")
     public ResultModel getPersonCountToday() {
         Integer sysLogTotalCount = sysLogService.getPersonCountToday();
-        if (sysLogTotalCount == 0) {
-            return ResultModel.error("500", "服务器错误");
-        } else {
-            return ResultModel.ok(sysLogTotalCount);
+        if (sysLogTotalCount == null) {
+            return ResultModel.error("查询失败");
         }
+            return ResultModel.ok(sysLogTotalCount);
     }
 
 }
